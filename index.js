@@ -13,13 +13,17 @@ async function main() {
         const percentage = Math.round(100 - ((screenWidth - pos) / screenWidth) * 100);
 
         if (percentage >= 100) {
-            await shiftWorkspace('next');
-            await setMouseCursor(1);
+            const workspaceMoved = await shiftWorkspace('next');
+            if (workspaceMoved) {
+                await setMouseCursor(1);
+            }
         }
 
         if (percentage <= 0) {
-            await shiftWorkspace('previous');
-            await setMouseCursor(99);
+            const workspaceMoved = await shiftWorkspace('previous');
+            if (workspaceMoved) {
+                await setMouseCursor(99);
+            }
         }
     }
 }
@@ -36,19 +40,22 @@ function sleep(n) {
 }
 
 async function shiftWorkspace(code) {
-    const { stdout:wmctrlOutput } = await exec("wmctrl -d | grep -w '*'");
+    const { stdout: wmctrlOutput } = await exec("wmctrl -d | grep -w '*'");
     const totalNumberOfWorkspaces = (await exec("wmctrl -d")).stdout.split("\n").length - 1;
 
     const currentWorkspace = Number(wmctrlOutput.slice(0, 1));
-    const nextWorkspace = Math.min(totalNumberOfWorkspaces, currentWorkspace + 1) + "";
-    const previousWorkspace = Math.max(0, currentWorkspace - 1) + "";
+    const nextWorkspace = currentWorkspace + 1;
+    const previousWorkspace = currentWorkspace - 1;
 
-    if (code == 'previous') {
+
+    if (code == 'previous' && previousWorkspace >= 0) {
         await exec(`wmctrl -s ${previousWorkspace}`);
+        return true;
     }
 
-    if (code == 'next') {
+    if (code == 'next' && nextWorkspace <= (totalNumberOfWorkspaces-1)) {
         await exec(`wmctrl -s ${nextWorkspace}`);
-
+        return true;
     }
+    return false;
 }

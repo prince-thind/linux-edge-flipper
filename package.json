@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "pkg --target=linux -o main index.js",
-    "start":"node index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -18,10 +18,10 @@
     "url": "https://github.com/prince-thind/linux-edge-flipper/issues"
   },
   "homepage": "https://github.com/prince-thind/linux-edge-flipper#readme",
-  "dependencies": {
-    "@nut-tree/nut-js": "^2.1.1"
-  },
   "devDependencies": {
     "pkg": "^5.8.0"
+  },
+  "dependencies": {
+    "@nut-tree/nut-js": "^2.1.1"
   }
 }
