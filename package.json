@@ -1,23 +1,27 @@
 {
-  "name": "workspace-shifting-utility",
+  "name": "linux-edge-flipper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "pkg --target=linux -o main index.js",
+    "start":"node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/prince-thind/workspace-shifting-utility.git"
+    "url": "git+https://github.com/prince-thind/linux-edge-flipper.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/prince-thind/workspace-shifting-utility/issues"
+    "url": "https://github.com/prince-thind/linux-edge-flipper/issues"
   },
-  "homepage": "https://github.com/prince-thind/workspace-shifting-utility#readme",
+  "homepage": "https://github.com/prince-thind/linux-edge-flipper#readme",
   "dependencies": {
     "@nut-tree/nut-js": "^2.1.1"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.0"
   }
 }

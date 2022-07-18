@@ -5,7 +5,7 @@ const exec = util.promisify(require('child_process').exec);
 main();
 
 async function main() {
-
+    console.log('started')
     const screenWidth = await screen.width();
     while (true) {
         await sleep(0.1);
@@ -14,12 +14,12 @@ async function main() {
 
         if (percentage >= 100) {
             await shiftWorkspace('next');
-            await setMouseCursor(0.9);
+            await setMouseCursor(1);
         }
 
         if (percentage <= 0) {
             await shiftWorkspace('previous');
-            await setMouseCursor(99.9);
+            await setMouseCursor(99);
         }
     }
 }
@@ -36,9 +36,11 @@ function sleep(n) {
 }
 
 async function shiftWorkspace(code) {
-    const { stdout, stderr } = await exec("wmctrl -d | grep -w '*'");
-    const currentWorkspace = Number(stdout.slice(0, 1));
-    const nextWorkspace = Math.min(4, currentWorkspace + 1) + "";
+    const { stdout:wmctrlOutput } = await exec("wmctrl -d | grep -w '*'");
+    const totalNumberOfWorkspaces = (await exec("wmctrl -d")).stdout.split("\n").length - 1;
+
+    const currentWorkspace = Number(wmctrlOutput.slice(0, 1));
+    const nextWorkspace = Math.min(totalNumberOfWorkspaces, currentWorkspace + 1) + "";
     const previousWorkspace = Math.max(0, currentWorkspace - 1) + "";
 
     if (code == 'previous') {
