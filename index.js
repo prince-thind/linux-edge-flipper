@@ -7,19 +7,24 @@ main();
 async function main() {
     console.log('started')
     const screenWidth = await screen.width();
+    const screenHeight = await screen.height();
     while (true) {
         await sleep(0.1);
-        const pos = (await mouse.getPosition()).x;
-        const percentage = Math.round(100 - ((screenWidth - pos) / screenWidth) * 100);
+        const mousePosition = (await mouse.getPosition())
+        const posX = mousePosition.x;
+        const posY = mousePosition.y;
+        const percentageX = Math.round(100 - ((screenWidth - posX) / screenWidth) * 100);
+        const percentageY = Math.round(100 - ((screenHeight - posY) / screenHeight) * 100);
 
-        if (percentage >= 100) {
+
+        if (percentageX >= 100 && (percentageY > 15 && percentageY < 80)) {
             const workspaceMoved = await shiftWorkspace('next');
             if (workspaceMoved) {
                 await setMouseCursor(1);
             }
         }
 
-        if (percentage <= 0) {
+        if (percentageX <= 0 && (percentageY > 15 && percentageY < 80)) {
             const workspaceMoved = await shiftWorkspace('previous');
             if (workspaceMoved) {
                 await setMouseCursor(99);
@@ -53,7 +58,7 @@ async function shiftWorkspace(code) {
         return true;
     }
 
-    if (code == 'next' && nextWorkspace <= (totalNumberOfWorkspaces-1)) {
+    if (code == 'next' && nextWorkspace <= (totalNumberOfWorkspaces - 1)) {
         await exec(`wmctrl -s ${nextWorkspace}`);
         return true;
     }
