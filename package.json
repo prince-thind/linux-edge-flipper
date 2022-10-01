@@ -22,6 +22,7 @@
     "pkg": "^5.8.0"
   },
   "dependencies": {
-    "@nut-tree/nut-js": "^2.1.1"
+    "@nut-tree/nut-js": "^2.1.1",
+    "dialog-node": "^0.2.1"
   }
 }

@@ -1,14 +1,34 @@
 const { mouse, screen } = require('@nut-tree/nut-js')
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const dialog = require('dialog-node')
 
-main();
+let running = true;
+
+dialog.question('Start', 'Edge Flipper', 0, start)
+
+function start(code) {
+    if (code == 0) {
+        running = true;
+        main();
+    }
+}
+
+function stop() {
+    running = false;
+    dialog.question('Restart', 'Edge Flipper', 0, start)
+
+}
+
 
 async function main() {
-    console.log('started')
     const screenWidth = await screen.width();
     const screenHeight = await screen.height();
+    dialog.info('Stop', 'Edge Flipper', 0, stop)
+
     while (true) {
+        if (!running) break;
+
         await sleep(0.1);
         const mousePosition = (await mouse.getPosition())
         const posX = mousePosition.x;
